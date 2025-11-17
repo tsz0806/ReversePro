@@ -1,11 +1,5 @@
 # ReversePro
 
-## ✨ 升級功能
-
-
-
-
-
 ---
 
 <div align="center">
