@@ -109,3 +109,42 @@ pip install fastapi uvicorn requests tiktoken
 - 在 Dify 中透過 `/v1/chat/completions` 作為模型供應商使用
 
 兩種方式可以同時運作，互不影響！
+
+
+---
+
+<div align="center">
+
+# 0️⃣ 功能更新
+
+</div>
+
+
+<div align="center">
+
+# 1️⃣ API 調用
+
+</div>
+
+
+
+<div align="center">
+
+# 2️⃣ Dify 配置
+
+</div>
+
+
+
+<div align="center">
+
+# 3️⃣ Langfuse
+
+</div>
+https://cloud.langfuse.com
+
+sk-lf-c5e820c3-e4e0-4926-87a7-d436494c6869
+pk-lf-a49f58f4-0cca-4f8d-805b-63f7d6acd9dd
+
+sk-lf-7849095e-f0f1-4c36-bc12-6e1dfca432b3
+pk-lf-fdae8353-bb8b-4cd4-9b4f-72b8eb7d01ba
