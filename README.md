@@ -48,19 +48,64 @@
     *   它**會**計算 Token。
     *   它**必須**返回 OpenAI 標準的 SSE 流式數據。
 
-### 如何使用
+## ✨ 使用方式：
 
-部署這個 `v9.0.0` 版本的 `main.py` 後，你的單一 API 服務就擁有了兩種能力：
+### 1. **原生 API 使用（保持不變）：**
 
-*   **當你需要完整的多輪對話和動態 Cookie 功能時**：
-    *   在 Dify 中使用「HTTP 工具模式」。
-    *   將 `HTTP 請求` 節點的 URL 設定為 `.../api/chat`。
-    *   搭建我們之前討論的完整工作流。
+```bash
+curl -X POST http://localhost:5000/api/chat \
+  -H "Content-Type: application/json" \
+  -d '{
+    "message": "你好",
+    "model": "grok-3",
+    "model_mode": "MODEL_MODE_AUTO",
+    "cookie": "your_custom_cookie"
+  }'
+```
 
-*   **當你想要在任何 Dify 應用中快速、便捷地使用，且不介意每次都是新對話時**：
-    *   在 Dify 中使用「模型供應商模式」。
-    *   去 `設置 -> 模型供應商` 添加一個新模型。
-    *   將 `API 基礎 URL` 設定為 `.../v1`。
-    *   在 `main.py` 的 `FALLBACK_COOKIE` 變數中填入一個有效的 Cookie（或者在部署平台的環境變數中設定 `GROK_COOKIE`）。
+### 2. **OpenAI 兼容格式（可在 Dify 中使用）：**
 
-這個雙模式的設計，讓你的專案在**靈活性**和**易用性**之間達到了完美的平衡。你可以根據不同的應用場景，選擇最適合的整合方式。
+```bash
+curl -X POST http://localhost:5000/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "grok-3",
+    "messages": [
+      {"role": "user", "content": "你好"}
+    ],
+    "metadata": {
+      "model_mode": "MODEL_MODE_AUTO",
+      "cookie": "your_custom_cookie"
+    }
+  }'
+```
+
+### 3. **在 Dify 中配置：**
+
+在 Dify 的「設定」→「模型供應商」→「自定義」中：
+
+```
+API Base URL: http://your-server:5000/v1
+API Key: any-key-here
+模型名稱: grok-3
+```
+
+## 主要特點：
+
+1. **雙協議支援**：同時提供原生 API 和 OpenAI 兼容格式
+2. **完全兼容**：可以直接在 Dify 中作為模型供應商使用
+3. **保留所有功能**：Cookie、Token 計算、modelMode 設定等
+4. **串流支援**：OpenAI 格式支援串流回應（SSE）
+5. **模型列表**：提供 `/v1/models` 端點供 Dify 查詢
+
+## 安裝依賴：
+
+```bash
+pip install fastapi uvicorn requests tiktoken
+```
+
+現在您可以：
+- 使用原本的 `/api/chat` 進行直接呼叫
+- 在 Dify 中透過 `/v1/chat/completions` 作為模型供應商使用
+
+兩種方式可以同時運作，互不影響！
