@@ -1,11 +1,28 @@
 # ReversePro
 
 ## ✨ 升級功能
+
+
+
+
+
+---
+
+<div align="center">
+
+# 0️⃣ 功能更新
+
+</div>
+
+## ✨ 增加功能
+
 1. 動態 Cookie：
+  
   - 修改 ChatRequest 模型，增加一個 grok_cookie 欄位。
   - 在 chat 函數中，優先使用從請求傳入的 grok_cookie 來構建請求標頭。
 
 2. Token 計算：
+  
   - 引入 tiktoken 函式庫。
   - 增加 count_tokens 輔助函式。
   - 在 chat 函數中，計算 prompt_tokens。
@@ -13,6 +30,7 @@
   - 在最終的 ChatResponse 中，加入 usage 物件回報 token 數量。
 
 3. 自訂 modelMode：
+  
   - 修改 ChatRequest 模型，增加一個可選的 model_mode 欄位。
   - 修改 build_payload 函式，讓它可以接收並使用傳入的 model_mode，如果沒有提供，則使用預設值。
 
@@ -31,94 +49,6 @@
     *   返回我們自訂的 JSON 格式響應。
     *   它**支援多輪對話**和所有你需要的自訂功能。
 
-### 這個雙模式版本是如何工作的？
-
-1.  **代碼結構分離**：
-    *   我們為兩種模式分別定義了不同的 Pydantic 請求模型 (`CustomChatRequest` 和 `OpenAIChatRequest`)。
-    *   我們創建了兩個獨立的 API 路由函數 `custom_chat` 和 `openai_chat_completions`，並將它們綁定到不同的路徑 (`/api/chat` 和 `/v1/chat/completions`)。
-
-2.  **`custom_chat` (HTTP 工具模式)**：
-    *   這就是我們之前 v8.0.0 的完整邏輯。
-    *   它處理所有你需要的自訂功能：動態 Cookie、多輪對話狀態傳遞、自訂 `modelMode`。
-    *   返回一個自訂格式的 JSON。
-
-3.  **`openai_chat_completions` (模型供應商模式)**：
-    *   它**只能**使用寫死或從環境變數讀取的 `FALLBACK_COOKIE`，因為 Dify 不會傳遞自訂 Cookie。
-    *   它**不處理**多輪對話（每次都是新對話），因為 Dify 的 `messages` 歷史很難直接映射到 Grok 的 `parentResponseId`。
-    *   它**會**計算 Token。
-    *   它**必須**返回 OpenAI 標準的 SSE 流式數據。
-
-## ✨ 使用方式：
-
-### 1. **原生 API 使用（保持不變）：**
-
-```bash
-curl -X POST http://localhost:5000/api/chat \
-  -H "Content-Type: application/json" \
-  -d '{
-    "message": "你好",
-    "model": "grok-3",
-    "model_mode": "MODEL_MODE_AUTO",
-    "cookie": "your_custom_cookie"
-  }'
-```
-
-### 2. **OpenAI 兼容格式（可在 Dify 中使用）：**
-
-```bash
-curl -X POST http://localhost:5000/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "grok-3",
-    "messages": [
-      {"role": "user", "content": "你好"}
-    ],
-    "metadata": {
-      "model_mode": "MODEL_MODE_AUTO",
-      "cookie": "your_custom_cookie"
-    }
-  }'
-```
-
-### 3. **在 Dify 中配置：**
-
-在 Dify 的「設定」→「模型供應商」→「自定義」中：
-
-```
-API Base URL: http://your-server:5000/v1
-API Key: any-key-here
-模型名稱: grok-3
-```
-
-## 主要特點：
-
-1. **雙協議支援**：同時提供原生 API 和 OpenAI 兼容格式
-2. **完全兼容**：可以直接在 Dify 中作為模型供應商使用
-3. **保留所有功能**：Cookie、Token 計算、modelMode 設定等
-4. **串流支援**：OpenAI 格式支援串流回應（SSE）
-5. **模型列表**：提供 `/v1/models` 端點供 Dify 查詢
-
-## 安裝依賴：
-
-```bash
-pip install fastapi uvicorn requests tiktoken
-```
-
-現在您可以：
-- 使用原本的 `/api/chat` 進行直接呼叫
-- 在 Dify 中透過 `/v1/chat/completions` 作為模型供應商使用
-
-兩種方式可以同時運作，互不影響！
-
-
----
-
-<div align="center">
-
-# 0️⃣ 功能更新
-
-</div>
-
 
 <div align="center">
 
@@ -126,13 +56,58 @@ pip install fastapi uvicorn requests tiktoken
 
 </div>
 
+## ✨ 可以直接在 Dify API Key 欄位貼上的格式：
 
+### 1. 純 Cookie（預設使用 MODEL_MODE_AUTO）
+
+```
+share_token=aaf6c70a7ba8832ae9b09ac055cd1081947d2d897b3ca2b65d826ceeecbcf653; imgID=67e253bdd0b63c582005f9a7; i18nextLng=en; mp_ea93da913ddb66b6372b89d97b1029ac_mixpanel=%7B%22distinct_id%22%3A%2200a70e22-fed7-4713-b4c5-9b16ba9c856f%22%2C%22%24device_id%22%3A%229c284b9a-2aa5-4b8e-886e-78017fc21d9e%22%2C%22%24initial_referrer%22%3A%22https%3A%2F%2Fylsagi.com%2F%22%2C%22%24initial_referring_domain%22%3A%22ylsagi.com%22%2C%22__mps%22%3A%7B%7D%2C%22__mpso%22%3A%7B%7D%2C%22__mpus%22%3A%7B%7D%2C%22__mpa%22%3A%7B%7D%2C%22__mpu%22%3A%7B%7D%2C%22__mpr%22%3A%5B%5D%2C%22__mpap%22%3A%5B%5D%2C%22%24user_id%22%3A%2200a70e22-fed7-4713-b4c5-9b16ba9c856f%22%7D
+```
+
+### 2. 帶 cookie: 前綴（明確標示）
+
+```
+cookie:share_token=aaf6c70a7ba8832ae9b09ac055cd1081947d2d897b3ca2b65d826ceeecbcf653; imgID=67e253bdd0b63c582005f9a7; i18nextLng=en; mp_ea93da913ddb66b6372b89d97b1029ac_mixpanel=%7B%22distinct_id%22%3A%2200a70e22-fed7-4713-b4c5-9b16ba9c856f%22%2C%22%24device_id%22%3A%229c284b9a-2aa5-4b8e-886e-78017fc21d9e%22%2C%22%24initial_referrer%22%3A%22https%3A%2F%2Fylsagi.com%2F%22%2C%22%24initial_referring_domain%22%3A%22ylsagi.com%22%2C%22__mps%22%3A%7B%7D%2C%22__mpso%22%3A%7B%7D%2C%22__mpus%22%3A%7B%7D%2C%22__mpa%22%3A%7B%7D%2C%22__mpu%22%3A%7B%7D%2C%22__mpr%22%3A%5B%5D%2C%22__mpap%22%3A%5B%5D%2C%22%24user_id%22%3A%2200a70e22-fed7-4713-b4c5-9b16ba9c856f%22%7D
+```
+
+### 3. MODEL_MODE_AUTO + Cookie
+
+```
+MODEL_MODE_AUTO|share_token=aaf6c70a7ba8832ae9b09ac055cd1081947d2d897b3ca2b65d826ceeecbcf653; imgID=67e253bdd0b63c582005f9a7; i18nextLng=en; mp_ea93da913ddb66b6372b89d97b1029ac_mixpanel=%7B%22distinct_id%22%3A%2200a70e22-fed7-4713-b4c5-9b16ba9c856f%22%2C%22%24device_id%22%3A%229c284b9a-2aa5-4b8e-886e-78017fc21d9e%22%2C%22%24initial_referrer%22%3A%22https%3A%2F%2Fylsagi.com%2F%22%2C%22%24initial_referring_domain%22%3A%22ylsagi.com%22%2C%22__mps%22%3A%7B%7D%2C%22__mpso%22%3A%7B%7D%2C%22__mpus%22%3A%7B%7D%2C%22__mpa%22%3A%7B%7D%2C%22__mpu%22%3A%7B%7D%2C%22__mpr%22%3A%5B%5D%2C%22__mpap%22%3A%5B%5D%2C%22%24user_id%22%3A%2200a70e22-fed7-4713-b4c5-9b16ba9c856f%22%7D
+```
+
+### 4. MODEL_MODE_FAST + Cookie（快速模式）
+
+```
+MODEL_MODE_FAST|share_token=aaf6c70a7ba8832ae9b09ac055cd1081947d2d897b3ca2b65d826ceeecbcf653; imgID=67e253bdd0b63c582005f9a7; i18nextLng=en; mp_ea93da913ddb66b6372b89d97b1029ac_mixpanel=%7B%22distinct_id%22%3A%2200a70e22-fed7-4713-b4c5-9b16ba9c856f%22%2C%22%24device_id%22%3A%229c284b9a-2aa5-4b8e-886e-78017fc21d9e%22%2C%22%24initial_referrer%22%3A%22https%3A%2F%2Fylsagi.com%2F%22%2C%22%24initial_referring_domain%22%3A%22ylsagi.com%22%2C%22__mps%22%3A%7B%7D%2C%22__mpso%22%3A%7B%7D%2C%22__mpus%22%3A%7B%7D%2C%22__mpa%22%3A%7B%7D%2C%22__mpu%22%3A%7B%7D%2C%22__mpr%22%3A%5B%5D%2C%22__mpap%22%3A%5B%5D%2C%22%24user_id%22%3A%2200a70e22-fed7-4713-b4c5-9b16ba9c856f%22%7D
+```
+
+### 5. MODEL_MODE_ACCURATE + Cookie（精確模式）
+
+```
+MODEL_MODE_ACCURATE|share_token=aaf6c70a7ba8832ae9b09ac055cd1081947d2d897b3ca2b65d826ceeecbcf653; imgID=67e253bdd0b63c582005f9a7; i18nextLng=en; mp_ea93da913ddb66b6372b89d97b1029ac_mixpanel=%7B%22distinct_id%22%3A%2200a70e22-fed7-4713-b4c5-9b16ba9c856f%22%2C%22%24device_id%22%3A%229c284b9a-2aa5-4b8e-886e-78017fc21d9e%22%2C%22%24initial_referrer%22%3A%22https%3A%2F%2Fylsagi.com%2F%22%2C%22%24initial_referring_domain%22%3A%22ylsagi.com%22%2C%22__mps%22%3A%7B%7D%2C%22__mpso%22%3A%7B%7D%2C%22__mpus%22%3A%7B%7D%2C%22__mpa%22%3A%7B%7D%2C%22__mpu%22%3A%7B%7D%2C%22__mpr%22%3A%5B%5D%2C%22__mpap%22%3A%5B%5D%2C%22%24user_id%22%3A%2200a70e22-fed7-4713-b4c5-9b16ba9c856f%22%7D
+```
+
+### 6. MODEL_MODE_REASONING + Cookie（推理模式）
+
+```
+MODEL_MODE_REASONING|share_token=aaf6c70a7ba8832ae9b09ac055cd1081947d2d897b3ca2b65d826ceeecbcf653; imgID=67e253bdd0b63c582005f9a7; i18nextLng=en; mp_ea93da913ddb66b6372b89d97b1029ac_mixpanel=%7B%22distinct_id%22%3A%2200a70e22-fed7-4713-b4c5-9b16ba9c856f%22%2C%22%24device_id%22%3A%229c284b9a-2aa5-4b8e-886e-78017fc21d9e%22%2C%22%24initial_referrer%22%3A%22https%3A%2F%2Fylsagi.com%2F%22%2C%22%24initial_referring_domain%22%3A%22ylsagi.com%22%2C%22__mps%22%3A%7B%7D%2C%22__mpso%22%3A%7B%7D%2C%22__mpus%22%3A%7B%7D%2C%22__mpa%22%3A%7B%7D%2C%22__mpu%22%3A%7B%7D%2C%22__mpr%22%3A%5B%5D%2C%22__mpap%22%3A%5B%5D%2C%22%24user_id%22%3A%2200a70e22-fed7-4713-b4c5-9b16ba9c856f%22%7D
+```
+### 在 Dify 中的設定步驟：
+
+1. 進入「設定」→「模型供應商」→「自定義」
+2. 填寫：
+   - **API Base URL**: `http://你的伺服器:5000/v1`
+   - **API Key**: 貼上上面任一格式
+   - **模型名稱**: `grok-3` 或 `grok-2` 或 `grok-1`
+3. 儲存並測試
 
 <div align="center">
 
-# 2️⃣ Dify 配置
+# 2️⃣ Dify 配置（HTTP版）
 
 </div>
+
 
 
 
