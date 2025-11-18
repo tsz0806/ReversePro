@@ -212,9 +212,11 @@ def main(http_response):
 
 <div align="center">
 
-# 3️⃣ Langfuse
+# 3️⃣ 監控
 
 </div>
+
+## langfuse
 
 https://cloud.langfuse.com
 
@@ -223,3 +225,21 @@ pk-lf-a49f58f4-0cca-4f8d-805b-63f7d6acd9dd
 
 sk-lf-7849095e-f0f1-4c36-bc12-6e1dfca432b3
 pk-lf-fdae8353-bb8b-4cd4-9b4f-72b8eb7d01ba
+
+
+## langsmith
+
+https://api.smith.langchain.com
+
+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
+LANGSMITH_PROJECT=pr-trustworthy-competitor-90
+
+
+## Pheonix
+
+https://app.phoenix.arize.com/s/tsz0806/v1/traces
+
+default
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJBcGlLZXk6MSJ9.HBs_qyPRhysOzcfv7g5KAwCCpeWGtPKo5aBgvgcU10A
+
+
