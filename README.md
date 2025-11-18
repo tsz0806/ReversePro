@@ -241,7 +241,7 @@ LANGSMITH_PROJECT=pr-trustworthy-competitor-90
 
 > https://app.phoenix.arize.com/s/tsz0806/v1/traces
 
-
+![](t/t1.png)
 
 default
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJBcGlLZXk6MSJ9.HBs_qyPRhysOzcfv7g5KAwCCpeWGtPKo5aBgvgcU10A
