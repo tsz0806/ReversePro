@@ -218,7 +218,7 @@ def main(http_response):
 
 ## langfuse
 
-https://cloud.langfuse.com
+> https://cloud.langfuse.com
 
 sk-lf-c5e820c3-e4e0-4926-87a7-d436494c6869
 pk-lf-a49f58f4-0cca-4f8d-805b-63f7d6acd9dd
@@ -229,7 +229,7 @@ pk-lf-fdae8353-bb8b-4cd4-9b4f-72b8eb7d01ba
 
 ## langsmith
 
-https://api.smith.langchain.com
+> https://api.smith.langchain.com
 
 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
 LANGSMITH_PROJECT=pr-trustworthy-competitor-90
@@ -237,9 +237,24 @@ LANGSMITH_PROJECT=pr-trustworthy-competitor-90
 
 ## Pheonix
 
-https://app.phoenix.arize.com/s/tsz0806/v1/traces
+> https://app.phoenix.arize.com/s/tsz0806/v1/traces
 
 default
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJBcGlLZXk6MSJ9.HBs_qyPRhysOzcfv7g5KAwCCpeWGtPKo5aBgvgcU10A
 
+## Arize AI
 
+> https://otlp.arize.com
+
+TRY
+U3BhY2U6MzI1MjU6Vnl6Sw==
+ak-bf0874c6-cf66-42f8-8405-52bf28b26d9d-ZluZFFdq2G7Zs3alfUNTzSsdrJVuLN3l
+
+
+## Opik
+
+> https://www.comet.com/opik/api/
+
+TRY
+tsz0806
+LsXbi3DynUwaTg9DCQuBmuKHy
